@@ -1,0 +1,11 @@
+.details{
+  position:relative;
+  float: left;
+  text-align: left;
+}
+#battle{
+  visibility: hidden;
+}
+#restart{
+  visibility: hidden;
+}
