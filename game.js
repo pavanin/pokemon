@@ -1,80 +1,6 @@
 let userPokemon={};
 let myPokemon={};
 
-let pokemonTypes = {
-  fire : {
-    strong: ['steel','bug','ice','grass'],
-    weak : ['rock','water','ground']
-  },
-  water : {
-    strong: ['fire','ground','rock'],
-    weak: ['electric','grass']
-  },
-  grass : {
-    strong: ['water','ground','rock'],
-    weak: ['fire','ice','poison','flying','bug']
-  },
-  electric : {
-    strong: ['water','flying'],
-    weak: ['ground','rock']
-  },
-  normal : {
-    strong: [],
-    weak: ['fighting']
-  },
-  ground : {
-    strong: ['fire','electric','poison','rock','steel'],
-    weak: ['water','grass','ice']
-  },
-  rock : {
-    strong: ['fire','ice','flying','bug'],
-    weak: ['water','grass','fighting','ground','steel']
-  },
-  fighting : {
-    strong: ['normal','ice','rock','dark','steel'],
-    weak: ['flying','psychic','fairy']
-  },
-  steel : {
-    strong: ['rock','ice','fairy'],
-    weak: ['fire','ground','fighting']
-  },
-  ice : {
-    strong: ['grass','ground','flying','dragon'],
-    weak: ['fire','fighting','rock','steel']
-  },
-  poison : {
-    strong: ['grass','fairy'],
-    weak: ['ground','psychic']
-  },
-  psychic : {
-    strong: ['fighting','poison'],
-    weak: ['bug','ghost','dark']
-  },
-  bug : {
-    strong: ['grass','psychic','dark'],
-    weak: ['fire','flying','rock']
-  },
-  flying : {
-    strong: ['grass','fighting','bug'],
-    weak: ['electric','ice','rock']
-  },
-  dragon : {
-    strong: ['dragon'],
-    weak: ['ice','dragon','fairy']
-  },
-  fairy : {
-    strong: ['fighting','dragon','dark'],
-    weak: ['poison','steel']
-  },
-  ghost : {
-    strong: ['psychic','ghost'],
-    weak: ['ghost','dark']
-  },
-  dark : {
-    strong: ['psychic','ghost'],
-    weak: ['fighting','bug','fairy']
-  },
-}
 
 const getPokemon= function(){
   return document.getElementById('user_pokemon').value.toLowerCase();
@@ -129,18 +55,13 @@ const isWeeker= function(){
   return pokemonTypes[userPokemon.type]["strong"].includes(myPokemon.type);
 }
 
-const getStatus= function(){
-  if(isWeeker()){
-    return("you lost!");
-  }
-  return("you won!");
-}
 
 const showVictory= function(){
   let status=document.getElementById("details");
   myPokemon=getDetails(this.responseText);
-  status.innerText=getStatus();
+  let battle = new Battle(userPokemon.type,myPokemon.Type);
   document.getElementById('img').src="";
+  status.innerText=battle.getStatus();
   document.getElementById('battle').style.visibility="hidden";
   document.getElementById('restart').style.visibility="visible";
 }
