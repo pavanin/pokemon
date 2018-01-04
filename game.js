@@ -1,31 +1,22 @@
-let userPokemon={};
-let myPokemon={};
-
-
-const getPokemon= function(){
+//changes the state of element
+const changeState= function(id,state){
+  document.getElementById(id).style.visibility=state;
+}
+//gives the userpokemon id
+const getUserPokemon= function(){
   return document.getElementById('user_pokemon').value.toLowerCase();
 }
-
+//gives my pokemon id
 const getRandomPokemon = function(){
   return Math.floor(Math.random()*802);
 }
-
-const getDetails=function(responseText){
-  let details=JSON.parse(responseText);
-  console.log(details);
-  let pokemon={};
-  pokemon["image"]=details.sprites.front_default;
-  pokemon["name"]=details.name;
-  pokemon["weight"]=details.weight;
-  pokemon["type"]=details.types[0].type.name;
-  return pokemon;
-}
-
+//converts to html format
+//this is not converting to html, this is adding values
 const toHtmlFormat = function(pokemonDetails) {
   let htmlFormat = [];
-  htmlFormat.push(`Name: ${pokemonDetails.name}`);
-  htmlFormat.push(`Weight: ${pokemonDetails.weight}`);
-  htmlFormat.push(`Type: ${pokemonDetails.type}`);
+  htmlFormat.push(`Name: ${pokemonDetails.getName()}`);
+  htmlFormat.push(`Order: ${pokemonDetails.getOrder()}`);
+  htmlFormat.push(`Type: ${pokemonDetails.getType()}`);
   return htmlFormat.join("\n");
 }
 
@@ -35,50 +26,46 @@ const showDetails= function(){
     details.innerText="use a valid pokemon name or id";
     return;
   }
-  userPokemon=getDetails(this.responseText);
+  userPokemon= new Pokemon(JSON.parse(this.responseText));
   details.innerText=toHtmlFormat(userPokemon);
   document.getElementById('img').src=userPokemon.image;
-  document.getElementById('battle').style.visibility="visible";
-  document.getElementById('restart').style.visibility="hidden";
+  changeState('battle',"visible");
+  changeState('restart',"hidden");
 }
-
-const showPokemon = function(){
-  let pokemon= getPokemon();
-  let xml=new XMLHttpRequest();
-  xml.addEventListener("load", showDetails);
-  xml.open("GET", `https://pokeapi.co/api/v2/pokemon/${pokemon}/`);
-  xml.send();
-
-}
-
-const isWeeker= function(){
-  return pokemonTypes[userPokemon.type]["strong"].includes(myPokemon.type);
-}
-
 
 const showVictory= function(){
   let status=document.getElementById("details");
-  myPokemon=getDetails(this.responseText);
-  let battle = new Battle(userPokemon.type,myPokemon.Type);
+  let details=JSON.parse(this.responseText);
+  let myPokemon= new Pokemon(details);
+  let battle = new Battle(userPokemon.type,myPokemon.getType());
   document.getElementById('img').src="";
   status.innerText=battle.getStatus();
-  document.getElementById('battle').style.visibility="hidden";
-  document.getElementById('restart').style.visibility="visible";
+  changeState('restart',"visible");
+  changeState('battle',"hidden");
+}
+
+const xmlHandler= function(callback,id){
+  let xml=new XMLHttpRequest();
+  xml.addEventListener("load", callback);
+  xml.open("GET", `https://pokeapi.co/api/v2/pokemon/${id}/`);
+  xml.send();
+}
+
+const showPokemonDetails = function(){
+  let pokemon= getUserPokemon();
+  xmlHandler(showDetails,pokemon);
 }
 
 const startBattle = function(){
   let pokemon= getRandomPokemon();
-  let xml=new XMLHttpRequest();
-  xml.addEventListener("load", showVictory);
-  xml.open("GET", `https://pokeapi.co/api/v2/pokemon/${pokemon}/`);
-  xml.send();
+  xmlHandler(showVictory,pokemon);
 }
 
 const addKeyListener = function() {
   let battleButton = document.getElementById('battle');
   let submitButton = document.getElementById('submit_button');
   battleButton.onclick = startBattle;
-  submitButton.onclick = showPokemon;
+  submitButton.onclick = showPokemonDetails;
 }
 
 window.onload = addKeyListener;
