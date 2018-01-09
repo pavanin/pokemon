@@ -1,8 +1,11 @@
-const Pokemon= function(pokemon){
-  this.image=pokemon.sprites.front_default;
-  this.name=pokemon.name;
-  this.order=pokemon.order;
-  this.type=pokemon.types[0].type.name;
+//delete after testing
+const pokemonTypes= require("./pokemonTypes.js")
+
+const Pokemon= function(image,name,weight,type){
+  this.image=image;
+  this.name=name;
+  this.weight=weight;
+  this.type=type;
 }
 
 Pokemon.prototype.getType=function(){
@@ -13,12 +16,16 @@ Pokemon.prototype.getName=function(){
   return this.name;
 }
 
-Pokemon.prototype.getOrder=function(){
-  return this.order;
+Pokemon.prototype.getWeight=function(){
+  return this.weight;
 }
 
 Pokemon.prototype.getImage= function(){
   return this.image;
 }
-//delete this after testing;
-// module.exports=Pokemon;
+Pokemon.prototype.canDefeat= function(otherPokemon){
+  return pokemonTypes[this.type].canDefeat(otherPokemon.type);
+}
+
+//delete after testing
+module.exports=Pokemon;
