@@ -54,6 +54,3 @@ pokemonTypes={
     canDefeat:(type)=>{return ['psychic','ghost'].includes(type)},
   }
 };
-
-//delete after testing
-module.exports=pokemonTypes;
