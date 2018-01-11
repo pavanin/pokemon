@@ -23,12 +23,13 @@ Pokemon.prototype.getImage= function(){
 }
 
 Pokemon.prototype.getDetails=function(){
-  this.details.image=this.getImage();
   this.details.name=this.getName();
   this.details.weight=this.getWeight();
   this.details.type=this.getType();
   return this.details;
 }
 Pokemon.prototype.canDefeat= function(otherPokemon){
-  return pokemonTypes[this.type].canDefeat(otherPokemon.type);
+  let isType=pokemonTypes[this.getType()].canDefeat(otherPokemon.type);
+  let isWeight=this.getWeight()>otherPokemon.getWeight();
+  return isType&&isWeight;
 }

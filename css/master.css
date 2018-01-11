@@ -1,7 +1,5 @@
-.details{
-  position:relative;
-  float: left;
-  text-align: left;
+.pokemon_Details{
+  visibility:hidden;
 }
 #battle{
   visibility: hidden;

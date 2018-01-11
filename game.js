@@ -4,7 +4,7 @@ const Game = function(){
 }
 
 Game.prototype.hasUserWon = function(){
-  return userPokemon.canDefeat(gamePokemon);
+  return this.userPokemon.canDefeat(this.gamePokemon);
 }
 
 Game.prototype.addUserPokemon = function(userPokemon){
@@ -13,4 +13,8 @@ Game.prototype.addUserPokemon = function(userPokemon){
 
 Game.prototype.addGamePokemon = function(gamePokemon){
   this.gamePokemon = gamePokemon;
+}
+
+Game.prototype.getGamePokemon= function(){
+  return this.gamePokemon.getImage();
 }
